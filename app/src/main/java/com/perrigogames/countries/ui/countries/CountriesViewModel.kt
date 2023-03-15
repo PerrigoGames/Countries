@@ -16,17 +16,28 @@ import kotlinx.serialization.json.Json
 import java.lang.Thread.sleep
 
 /**
- * The [ViewModel]
+ * The [ViewModel] for [CountriesFragment] that handles fetching and processing the remote list
+ * of countries for the UI.
  */
 class CountriesViewModel : ViewModel() {
 
+    /**
+     * An enum class describing the current state of the ViewModel's fetching operation.
+     */
     enum class State {
-        FETCHING, SUCCESS, ERROR
+        FETCHING, // The fetch operation is ongoing, show a loading spinner.
+        SUCCESS, // The fetch is successful, show the resulting list of countries.
+        ERROR, // The fetch failed, show an error message.
     }
 
     val countriesList = MutableLiveData<List<Country>>()
     val state = MutableLiveData<State>()
 
+    /**
+     * Asynchronously fetches a list of [Country] objects, updating the [state] and [countriesList]
+     * LiveData objects as needed.
+     * @param url the URL to GET the list of countries from
+     */
     fun fetchCountries(url: String) {
         countriesList.value = emptyList()
         state.value = State.FETCHING

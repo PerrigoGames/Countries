@@ -7,7 +7,8 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
 /**
- * A Ktor [HttpClient] capable of
+ * A Ktor [HttpClient] capable of making requests and handling JSON bodies in requests and
+ * responses.
  */
 internal val ktorHttpClient = HttpClient(Android) {
 
