@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="item_country_cell_padding">8dp</dimen>
+    <dimen name="item_country_cell_row_spacing">8dp</dimen>
+    <dimen name="item_country_cell_country_code_spacing">8dp</dimen>
+</resources>
