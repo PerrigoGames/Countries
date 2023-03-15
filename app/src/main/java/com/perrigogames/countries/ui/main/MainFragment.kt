@@ -23,11 +23,7 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private val adapter = CountryAdapter()
-    private val layoutManager = LinearLayoutManager(
-        /* context = */ requireContext(),
-        /* orientation = */ RecyclerView.VERTICAL,
-        /* reverseLayout = */ false,
-    )
+    private lateinit var layoutManager: RecyclerView.LayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +35,18 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        layoutManager = LinearLayoutManager(
+            /* context = */ requireContext(),
+            /* orientation = */ RecyclerView.VERTICAL,
+            /* reverseLayout = */ false,
+        )
+
+        val fragmentView = inflater.inflate(R.layout.fragment_main, container, false)
+        fragmentView.findViewById<RecyclerView>(R.id.recycler_countries).also { recycler ->
+            recycler.adapter = adapter
+            recycler.layoutManager = layoutManager
+        }
+        return fragmentView
     }
 
     /**
