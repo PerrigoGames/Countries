@@ -3,6 +3,7 @@ package com.perrigogames.countries.ui.countries
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.perrigogames.countries.data.Country
 import com.perrigogames.countries.net.ktorHttpClient
@@ -31,7 +32,10 @@ class CountriesViewModel : ViewModel() {
     }
 
     val countriesList = MutableLiveData<List<Country>>()
-    val state = MutableLiveData<State>()
+    private val state = MutableLiveData<State>()
+    val loadingVisible = state.map { it == State.FETCHING }
+    val countriesVisible = state.map { it == State.SUCCESS }
+    val errorVisible = state.map { it == State.ERROR }
 
     /**
      * Asynchronously fetches a list of [Country] objects, updating the [state] and [countriesList]

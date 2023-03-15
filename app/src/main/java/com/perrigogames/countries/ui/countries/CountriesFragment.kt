@@ -84,11 +84,15 @@ class CountriesFragment : Fragment() {
         }
 
         // Listen to a couple fields that depend on the views being found
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            loadingView.isVisible = state == FETCHING
-            recyclerCountries.isVisible = state == SUCCESS
-            textErrorMessage.isVisible = state == ERROR
-            buttonErrorRetry.isVisible = state == ERROR
+        viewModel.loadingVisible.observe(viewLifecycleOwner) { visible ->
+            loadingView.isVisible = visible
+        }
+        viewModel.countriesVisible.observe(viewLifecycleOwner) { visible ->
+            recyclerCountries.isVisible = visible
+        }
+        viewModel.errorVisible.observe(viewLifecycleOwner) { visible ->
+            textErrorMessage.isVisible = visible
+            buttonErrorRetry.isVisible = visible
         }
 
         return fragmentView
