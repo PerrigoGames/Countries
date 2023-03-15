@@ -11,6 +11,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -58,11 +59,7 @@ class CountriesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        layoutManager = LinearLayoutManager(
-            /* context = */ requireContext(),
-            /* orientation = */ RecyclerView.VERTICAL,
-            /* reverseLayout = */ false,
-        )
+        layoutManager = createLayoutManager()
 
         val fragmentView = inflater.inflate(R.layout.fragment_countries, container, false)
 
@@ -70,10 +67,10 @@ class CountriesFragment : Fragment() {
         recyclerCountries.adapter = adapter
         recyclerCountries.layoutManager = layoutManager
         recyclerCountries.addItemDecoration(
-            DividerItemDecoration(
-                /* context = */ requireContext(),
-                /* orientation = */ RecyclerView.VERTICAL,
-            )
+            DividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
+        )
+        recyclerCountries.addItemDecoration(
+            DividerItemDecoration(requireContext(), RecyclerView.HORIZONTAL)
         )
 
         loadingView = fragmentView.findViewById(R.id.spinner_loading)
@@ -96,6 +93,22 @@ class CountriesFragment : Fragment() {
         }
 
         return fragmentView
+    }
+
+    private fun createLayoutManager(): RecyclerView.LayoutManager {
+        val isLandscape = requireContext().resources.displayMetrics.let { dm ->
+            dm.widthPixels > dm.heightPixels
+        }
+        val spanCount = when {
+            isLandscape -> 2
+            else -> 1
+        }
+        return GridLayoutManager(
+            /* context = */ requireContext(),
+            /* spanCount = */ spanCount,
+            /* orientation = */ RecyclerView.VERTICAL,
+            /* reverseLayout = */ false,
+        )
     }
 
     /**
