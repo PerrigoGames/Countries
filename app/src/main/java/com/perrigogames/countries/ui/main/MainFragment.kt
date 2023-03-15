@@ -28,7 +28,11 @@ class MainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
+        viewModel.fetchCountries(getString(R.string.url_countries_list))
+
+        viewModel.countriesList.observe(this) { newList ->
+            adapter.submitList(newList)
+        }
     }
 
     override fun onCreateView(
