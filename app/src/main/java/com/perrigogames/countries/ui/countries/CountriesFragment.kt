@@ -2,11 +2,13 @@ package com.perrigogames.countries.ui.countries
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -14,7 +16,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.recyclerview.widget.RecyclerView.*
+import coil.decode.SvgDecoder
+import coil.load
 import com.perrigogames.countries.R
 import com.perrigogames.countries.data.Country
 import com.perrigogames.countries.data.CountryItemCallback
@@ -118,11 +122,21 @@ class CountriesFragment : Fragment() {
          * DataBinding feature was giving me trouble.  If it had worked, I would pass in the
          * [ItemCountryRowBinding] object and simply store/refer to that.
          */
+        private val imageFlag = itemView.findViewById<ImageView>(R.id.image_flag)
         private val textTitleRegion = itemView.findViewById<TextView>(R.id.text_name_region)
         private val textCountryCode = itemView.findViewById<TextView>(R.id.text_country_code)
         private val textCapital = itemView.findViewById<TextView>(R.id.text_capital)
 
         fun bind(country: Country) {
+            Log.v("UI", country.flag)
+            if (country.flag.isNotEmpty()) {
+                imageFlag.visibility = VISIBLE
+                imageFlag.load(country.flag) {
+                    decoderFactory { result, options, _ -> SvgDecoder(result.source, options) }
+                }
+            } else {
+                imageFlag.visibility = INVISIBLE
+            }
             textTitleRegion.text = getString(
                 R.string.country_name_region_format,
                 country.name,

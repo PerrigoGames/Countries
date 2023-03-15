@@ -42,5 +42,13 @@
         tools:text="Washington, D.C."
         />
 
+    <ImageView
+        android:id="@+id/image_flag"
+        android:layout_width="@dimen/flag_max_size"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

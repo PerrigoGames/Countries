@@ -6,4 +6,5 @@
     <dimen name="error_item_spacing">8dp</dimen>
     <dimen name="error_horizontal_margin">16dp</dimen>
     <dimen name="error_message_text_size">24sp</dimen>
+    <dimen name="flag_max_size">100dp</dimen>
 </resources>

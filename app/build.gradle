@@ -48,8 +48,8 @@ dependencies {
     implementation "io.ktor:ktor-client-content-negotiation:$ktorVersion"
     implementation "io.ktor:ktor-serialization-kotlinx-json:$ktorVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
-    implementation "com.github.bumptech.glide:glide:$glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+    implementation "io.coil-kt:coil:$coilVersion"
+    implementation "io.coil-kt:coil-svg:$coilVersion"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
