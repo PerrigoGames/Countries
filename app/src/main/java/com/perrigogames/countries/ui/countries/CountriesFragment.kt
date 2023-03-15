@@ -46,8 +46,10 @@ class CountriesFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this).get(CountriesViewModel::class.java)
 
-        // Fetch the list of countries async...
-        viewModel.fetchCountries(getString(R.string.url_countries_list))
+        if (savedInstanceState == null) {
+            // Fetch the list of countries async...
+            viewModel.fetchCountries(getString(R.string.url_countries_list))
+        }
 
         // ...and listen for the data set to change
         viewModel.countriesList.observe(this) { newList ->
