@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -49,6 +50,12 @@ class MainFragment : Fragment() {
         fragmentView.findViewById<RecyclerView>(R.id.recycler_countries).also { recycler ->
             recycler.adapter = adapter
             recycler.layoutManager = layoutManager
+            recycler.addItemDecoration(
+                DividerItemDecoration(
+                    /* context = */ requireContext(),
+                    /* orientation = */ RecyclerView.VERTICAL,
+                )
+            )
         }
         return fragmentView
     }
