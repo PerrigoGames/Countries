@@ -15,7 +15,7 @@ internal val ktorHttpClient = HttpClient(Android) {
         /**
          * This wasn't auto-deserializing properly due to the content type being `text/plain`, which
          * isn't automatically caught by [ContentNegotiation].  It's worked around directly in
-         * [MainViewModel].
+         * [CountriesViewModel].
          */
         json(Json {
             prettyPrint = true

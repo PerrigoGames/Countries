@@ -1,4 +1,4 @@
-package com.perrigogames.countries.ui.main
+package com.perrigogames.countries.ui.countries
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -18,32 +18,32 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.perrigogames.countries.R
 import com.perrigogames.countries.data.Country
 import com.perrigogames.countries.data.CountryItemCallback
-import com.perrigogames.countries.ui.main.MainViewModel.State.*
+import com.perrigogames.countries.ui.countries.CountriesViewModel.State.*
 
 /**
  * The main [Fragment] that fetches a list of countries and displays them in a [RecyclerView].
  */
-class MainFragment : Fragment() {
+class CountriesFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = CountriesFragment()
     }
 
     /**
-     * This would be a [FragmentMainBinding] if databinding was working.
+     * This would be a [FragmentCountriesBinding] if databinding was working.
      */
     private lateinit var loadingView: ProgressBar
     private lateinit var recyclerCountries: RecyclerView
     private lateinit var textErrorMessage: TextView
     private lateinit var buttonErrorRetry: Button
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: CountriesViewModel
     private val adapter = CountryAdapter()
     private lateinit var layoutManager: RecyclerView.LayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(CountriesViewModel::class.java)
 
         // Fetch the list of countries async...
         viewModel.fetchCountries(getString(R.string.url_countries_list))
@@ -64,7 +64,7 @@ class MainFragment : Fragment() {
             /* reverseLayout = */ false,
         )
 
-        val fragmentView = inflater.inflate(R.layout.fragment_main, container, false)
+        val fragmentView = inflater.inflate(R.layout.fragment_countries, container, false)
 
         recyclerCountries = fragmentView.findViewById(R.id.recycler_countries)
         recyclerCountries.adapter = adapter

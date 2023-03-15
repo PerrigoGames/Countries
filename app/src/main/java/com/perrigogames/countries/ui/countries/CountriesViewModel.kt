@@ -1,4 +1,4 @@
-package com.perrigogames.countries.ui.main
+package com.perrigogames.countries.ui.countries
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -18,7 +18,7 @@ import java.lang.Thread.sleep
 /**
  * The [ViewModel]
  */
-class MainViewModel : ViewModel() {
+class CountriesViewModel : ViewModel() {
 
     enum class State {
         FETCHING, SUCCESS, ERROR
