@@ -13,25 +13,51 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import java.lang.Thread.sleep
 
+/**
+ * The [ViewModel]
+ */
 class MainViewModel : ViewModel() {
 
+    enum class State {
+        FETCHING, SUCCESS, ERROR
+    }
+
     val countriesList = MutableLiveData<List<Country>>()
-    val countriesFetchError = MutableLiveData(false)
+    val state = MutableLiveData<State>()
 
     fun fetchCountries(url: String) {
-        countriesFetchError.value = false
+        countriesList.value = emptyList()
+        state.value = State.FETCHING
 
+        // Launch a computation coroutine to prevent blocking the main thread.
         viewModelScope.launch(Dispatchers.IO) {
             val response = ktorHttpClient.get(url)
+            sleep(1000) // Simulate longer operation to show loading spinner
+
             if (response.status.isSuccess()) {
-                val countries = Json.decodeFromString<List<Country>>(response.bodyAsText())
-                viewModelScope.launch(Dispatchers.Main) {
-                    Log.v("Request", "Setting countries: ${countries.size} entries")
-                    countriesList.value = countries
+                try {
+                    // This works around the mismatched content type from the server.
+                    val countries = Json.decodeFromString<List<Country>>(response.bodyAsText())
+
+                    // Once computation is done, set the LiveData on the main thread.
+                    viewModelScope.launch(Dispatchers.Main) {
+                        Log.v("Request", "Setting countries: ${countries.size} entries")
+                        state.value = State.SUCCESS
+                        countriesList.value = countries
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    viewModelScope.launch(Dispatchers.Main) {
+                        state.value = State.ERROR
+                    }
                 }
             } else {
-                countriesFetchError.value = true
+                Log.w("Request", response.status.toString())
+                viewModelScope.launch(Dispatchers.Main) {
+                    state.value = State.ERROR
+                }
             }
         }
     }

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Countries</string>
     <string name="country_name_region_format">"%s, %s"</string>
+    <string name="error_message">Oops, something went wrong!</string>
+    <string name="error_retry">Retry</string>
 
     <string name="url_countries_list">https://gist.githubusercontent.com/peymano-wmt/32dcb892b06648910ddd40406e37fdab/raw/db25946fd77c5873b0303b858e861ce724e0dcd0/countries.json</string>
 </resources>

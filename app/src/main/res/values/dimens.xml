@@ -3,4 +3,7 @@
     <dimen name="item_country_cell_padding">8dp</dimen>
     <dimen name="item_country_cell_row_spacing">8dp</dimen>
     <dimen name="item_country_cell_country_code_spacing">8dp</dimen>
+    <dimen name="error_item_spacing">8dp</dimen>
+    <dimen name="error_horizontal_margin">16dp</dimen>
+    <dimen name="error_message_text_size">24sp</dimen>
 </resources>

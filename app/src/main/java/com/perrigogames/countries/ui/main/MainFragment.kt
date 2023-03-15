@@ -6,7 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -15,12 +18,24 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.perrigogames.countries.R
 import com.perrigogames.countries.data.Country
 import com.perrigogames.countries.data.CountryItemCallback
+import com.perrigogames.countries.ui.main.MainViewModel.State.*
 
+/**
+ * The main [Fragment] that fetches a list of countries and displays them in a [RecyclerView].
+ */
 class MainFragment : Fragment() {
 
     companion object {
         fun newInstance() = MainFragment()
     }
+
+    /**
+     * This would be a [FragmentMainBinding] if databinding was working.
+     */
+    private lateinit var loadingView: ProgressBar
+    private lateinit var recyclerCountries: RecyclerView
+    private lateinit var textErrorMessage: TextView
+    private lateinit var buttonErrorRetry: Button
 
     private lateinit var viewModel: MainViewModel
     private val adapter = CountryAdapter()
@@ -29,8 +44,11 @@ class MainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+        // Fetch the list of countries async...
         viewModel.fetchCountries(getString(R.string.url_countries_list))
 
+        // ...and listen for the data set to change
         viewModel.countriesList.observe(this) { newList ->
             adapter.submitList(newList)
         }
@@ -47,16 +65,32 @@ class MainFragment : Fragment() {
         )
 
         val fragmentView = inflater.inflate(R.layout.fragment_main, container, false)
-        fragmentView.findViewById<RecyclerView>(R.id.recycler_countries).also { recycler ->
-            recycler.adapter = adapter
-            recycler.layoutManager = layoutManager
-            recycler.addItemDecoration(
-                DividerItemDecoration(
-                    /* context = */ requireContext(),
-                    /* orientation = */ RecyclerView.VERTICAL,
-                )
+
+        recyclerCountries = fragmentView.findViewById(R.id.recycler_countries)
+        recyclerCountries.adapter = adapter
+        recyclerCountries.layoutManager = layoutManager
+        recyclerCountries.addItemDecoration(
+            DividerItemDecoration(
+                /* context = */ requireContext(),
+                /* orientation = */ RecyclerView.VERTICAL,
             )
+        )
+
+        loadingView = fragmentView.findViewById(R.id.spinner_loading)
+        textErrorMessage = fragmentView.findViewById(R.id.text_error_message)
+        buttonErrorRetry = fragmentView.findViewById(R.id.button_error_retry)
+        buttonErrorRetry.setOnClickListener {
+            viewModel.fetchCountries(getString(R.string.url_countries_list))
         }
+
+        // Listen to a couple fields that depend on the views being found
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            loadingView.isVisible = state == FETCHING
+            recyclerCountries.isVisible = state == SUCCESS
+            textErrorMessage.isVisible = state == ERROR
+            buttonErrorRetry.isVisible = state == ERROR
+        }
+
         return fragmentView
     }
 
