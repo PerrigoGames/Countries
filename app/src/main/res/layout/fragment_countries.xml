@@ -1,58 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.countries.CountriesFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_countries"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.perrigogames.countries.ui.countries.CountriesViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        tools:context=".ui.countries.CountriesFragment">
 
-    <TextView
-        android:id="@+id/text_error_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="@string/error_message"
-        android:textAlignment="center"
-        android:textSize="@dimen/error_message_text_size"
-        android:layout_marginBottom="@dimen/error_item_spacing"
-        android:layout_marginHorizontal="@dimen/error_horizontal_margin"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintBottom_toTopOf="@id/button_error_retry"
-        tools:visibility="visible"
-        style="@style/Theme.Material3.DayNight"
-        />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_countries"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
 
-    <Button
-        android:id="@+id/button_error_retry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/error_retry"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_error_message"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:visibility="visible"
-        />
+        <TextView
+            android:id="@+id/text_error_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/error_message"
+            android:textAlignment="center"
+            android:textSize="@dimen/error_message_text_size"
+            android:layout_marginBottom="@dimen/error_item_spacing"
+            android:layout_marginHorizontal="@dimen/error_horizontal_margin"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintBottom_toTopOf="@id/button_error_retry"
+            tools:visibility="visible"
+            style="@style/Theme.Material3.DayNight"
+            />
 
-    <ProgressBar
-        android:id="@+id/spinner_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        <Button
+            android:id="@+id/button_error_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/error_retry"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_error_message"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:visibility="visible"
+            />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:id="@+id/spinner_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,47 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/item_country_cell_padding"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/text_name_region"
-        android:layout_width="0dp"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.perrigogames.countries.data.Country" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/item_country_cell_row_spacing"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/text_country_code"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/text_capital"
-        tools:text="United States of America, NA"
-        />
+        android:padding="@dimen/item_country_cell_padding"
+        >
 
-    <TextView
-        android:id="@+id/text_country_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="US"
-        android:layout_marginStart="@dimen/item_country_cell_country_code_spacing"
-        app:layout_constraintTop_toTopOf="@id/text_name_region"
-        app:layout_constraintBottom_toBottomOf="@id/text_name_region"
-        app:layout_constraintStart_toEndOf="@id/text_name_region"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        <TextView
+            android:id="@+id/text_name_region"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/item_country_cell_row_spacing"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/text_country_code"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/text_capital"
+            tools:text="United States of America, NA"
+            />
 
-    <TextView
-        android:id="@+id/text_capital"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_name_region"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="Washington, D.C."
-        />
+        <TextView
+            android:id="@+id/text_country_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="US"
+            android:layout_marginStart="@dimen/item_country_cell_country_code_spacing"
+            app:layout_constraintTop_toTopOf="@id/text_name_region"
+            app:layout_constraintBottom_toBottomOf="@id/text_name_region"
+            app:layout_constraintStart_toEndOf="@id/text_name_region"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
 
+        <TextView
+            android:id="@+id/text_capital"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_name_region"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Washington, D.C."
+            />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

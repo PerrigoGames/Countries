@@ -64,6 +64,12 @@ class CountriesFragment : Fragment() {
         layoutManager = createLayoutManager()
 
         val fragmentView = inflater.inflate(R.layout.fragment_countries, container, false)
+//        val fragmentView = DataBindingUtil.inflate<FragmentCountriesBinding>(
+//            /* inflater = */ inflater,
+//            /* layoutId = */ R.layout.fragment_countries,
+//            /* parent = */ container,
+//            /* attachToParent = */ false,
+//        )
 
         recyclerCountries = fragmentView.findViewById(R.id.recycler_countries)
         recyclerCountries.adapter = adapter
