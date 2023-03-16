@@ -33,10 +33,12 @@ class CountriesViewModel : ViewModel() {
 
     val countriesList = MutableLiveData<List<UiCountry>>()
     private val state = MutableLiveData<State>()
-    
+
     val loadingVisible = state.map { it == State.FETCHING }
     val countriesVisible = state.map { it == State.SUCCESS }
     val errorVisible = state.map { it == State.ERROR }
+
+    private var lastFetchUrl: String? = null
 
     /**
      * Asynchronously fetches a list of [Country] objects, updating the [state] and [countriesList]
@@ -44,6 +46,7 @@ class CountriesViewModel : ViewModel() {
      * @param url the URL to GET the list of countries from
      */
     fun fetchCountries(url: String) {
+        lastFetchUrl = url
         countriesList.value = emptyList()
         state.value = State.FETCHING
 
@@ -78,5 +81,16 @@ class CountriesViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    /**
+     * Refetches the list of countries using the same URL as the last time [fetchCountries]
+     * was called.
+     * @throws Error if [fetchCountries] has not been previously called.
+     */
+    fun refetchCountries() {
+        lastFetchUrl?.let {
+            fetchCountries(it)
+        } ?: error("Must call `fetchCountries` first to set the URL")
     }
 }

@@ -65,10 +65,6 @@ class CountriesFragment : Fragment() {
             addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.HORIZONTAL))
         }
 
-        binding.buttonErrorRetry.setOnClickListener {
-            viewModel.fetchCountries(getString(R.string.url_countries_list))
-        }
-
         return binding.root
     }
 
