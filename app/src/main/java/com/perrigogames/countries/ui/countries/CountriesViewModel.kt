@@ -33,6 +33,7 @@ class CountriesViewModel : ViewModel() {
 
     val countriesList = MutableLiveData<List<UiCountry>>()
     private val state = MutableLiveData<State>()
+    
     val loadingVisible = state.map { it == State.FETCHING }
     val countriesVisible = state.map { it == State.SUCCESS }
     val errorVisible = state.map { it == State.ERROR }

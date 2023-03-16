@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="viewModel"
             type="com.perrigogames.countries.ui.countries.CountriesViewModel" />
@@ -20,13 +21,14 @@
             android:id="@+id/recycler_countries"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="@{viewModel.countriesVisible ? View.VISIBLE : View.GONE}"
             />
 
         <TextView
             android:id="@+id/text_error_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="@{viewModel.errorVisible ? View.VISIBLE : View.GONE}"
             android:text="@string/error_message"
             android:textAlignment="center"
             android:textSize="@dimen/error_message_text_size"
@@ -44,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/error_retry"
-            android:visibility="gone"
+            android:visibility="@{viewModel.errorVisible ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_error_message"
@@ -57,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="gone"
+            android:visibility="@{viewModel.loadingVisible ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -6,21 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.perrigogames.countries.R
 import com.perrigogames.countries.data.Country
 import com.perrigogames.countries.data.CountryItemCallback
+import com.perrigogames.countries.databinding.FragmentCountriesBinding
 import com.perrigogames.countries.databinding.ItemCountryRowBinding
-import com.perrigogames.countries.ui.countries.CountriesViewModel.State.*
 
 /**
  * The main [Fragment] that fetches a list of countries and displays them in a [RecyclerView].
@@ -31,17 +26,8 @@ class CountriesFragment : Fragment() {
         fun newInstance() = CountriesFragment()
     }
 
-    /**
-     * This would be a [FragmentCountriesBinding] if databinding was working.
-     */
-    private lateinit var loadingView: ProgressBar
-    private lateinit var recyclerCountries: RecyclerView
-    private lateinit var textErrorMessage: TextView
-    private lateinit var buttonErrorRetry: Button
-
     private lateinit var viewModel: CountriesViewModel
     private val adapter = CountryAdapter()
-    private lateinit var layoutManager: RecyclerView.LayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,46 +48,28 @@ class CountriesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        layoutManager = createLayoutManager()
-
-        val fragmentView = inflater.inflate(R.layout.fragment_countries, container, false)
-//        val fragmentView = DataBindingUtil.inflate<FragmentCountriesBinding>(
-//            /* inflater = */ inflater,
-//            /* layoutId = */ R.layout.fragment_countries,
-//            /* parent = */ container,
-//            /* attachToParent = */ false,
-//        )
-
-        recyclerCountries = fragmentView.findViewById(R.id.recycler_countries)
-        recyclerCountries.adapter = adapter
-        recyclerCountries.layoutManager = layoutManager
-        recyclerCountries.addItemDecoration(
-            DividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
-        )
-        recyclerCountries.addItemDecoration(
-            DividerItemDecoration(requireContext(), RecyclerView.HORIZONTAL)
+        val binding = FragmentCountriesBinding.inflate(
+            /* inflater = */ inflater,
+            /* root = */ container,
+            /* attachToRoot = */ false,
         )
 
-        loadingView = fragmentView.findViewById(R.id.spinner_loading)
-        textErrorMessage = fragmentView.findViewById(R.id.text_error_message)
-        buttonErrorRetry = fragmentView.findViewById(R.id.button_error_retry)
-        buttonErrorRetry.setOnClickListener {
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
+
+        binding.recyclerCountries.apply {
+            adapter = this@CountriesFragment.adapter
+            layoutManager = createLayoutManager()
+
+            addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
+            addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.HORIZONTAL))
+        }
+
+        binding.buttonErrorRetry.setOnClickListener {
             viewModel.fetchCountries(getString(R.string.url_countries_list))
         }
 
-        // Listen to a couple fields that depend on the views being found
-        viewModel.loadingVisible.observe(viewLifecycleOwner) { visible ->
-            loadingView.isVisible = visible
-        }
-        viewModel.countriesVisible.observe(viewLifecycleOwner) { visible ->
-            recyclerCountries.isVisible = visible
-        }
-        viewModel.errorVisible.observe(viewLifecycleOwner) { visible ->
-            textErrorMessage.isVisible = visible
-            buttonErrorRetry.isVisible = visible
-        }
-
-        return fragmentView
+        return binding.root
     }
 
     private fun createLayoutManager(): RecyclerView.LayoutManager {
