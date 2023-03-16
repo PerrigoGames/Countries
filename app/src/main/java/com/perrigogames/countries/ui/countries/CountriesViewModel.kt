@@ -6,15 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.perrigogames.countries.data.Country
-import com.perrigogames.countries.net.ktorHttpClient
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
+import com.perrigogames.countries.net.CountriesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
-import java.lang.Thread.sleep
 
 /**
  * The [ViewModel] for [CountriesFragment] that handles fetching and processing the remote list
@@ -52,30 +46,15 @@ class CountriesViewModel : ViewModel() {
 
         // Launch a computation coroutine to prevent blocking the main thread.
         viewModelScope.launch(Dispatchers.IO) {
-            val response = ktorHttpClient.get(url)
-            sleep(1000) // Simulate longer operation to show loading spinner
-
-            if (response.status.isSuccess()) {
-                try {
-                    // This works around the mismatched content type from the server.
-                    val countries = Json
-                        .decodeFromString<List<Country>>(response.bodyAsText())
-                        .map { it.toUiModel() }
-
-                    // Once computation is done, set the LiveData on the main thread.
-                    viewModelScope.launch(Dispatchers.Main) {
-                        Log.v("Request", "Setting countries: ${countries.size} entries")
-                        state.value = State.SUCCESS
-                        countriesList.value = countries
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    viewModelScope.launch(Dispatchers.Main) {
-                        state.value = State.ERROR
-                    }
+            val response = CountriesApi.getCountries(url)
+            if (response.isSuccess()) {
+                viewModelScope.launch(Dispatchers.Main) {
+                    Log.v("Request", "Setting countries: ${response.countries!!.size} entries")
+                    state.value = State.SUCCESS
+                    countriesList.value = response.countries.map { it.toUiModel() }
                 }
             } else {
-                Log.w("Request", response.status.toString())
+                response.exception!!.printStackTrace()
                 viewModelScope.launch(Dispatchers.Main) {
                     state.value = State.ERROR
                 }
