@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.perrigogames.countries.R
 import com.perrigogames.countries.data.Country
 import com.perrigogames.countries.data.CountryItemCallback
+import com.perrigogames.countries.databinding.ItemCountryRowBinding
 import com.perrigogames.countries.ui.countries.CountriesViewModel.State.*
 
 /**
@@ -122,11 +123,15 @@ class CountriesFragment : Fragment() {
     /**
      * Custom [ListAdapter] class to handle instantiation and binding of [CountryViewHolder]s.
      */
-    inner class CountryAdapter : ListAdapter<Country, CountryViewHolder>(CountryItemCallback()) {
+    inner class CountryAdapter : ListAdapter<UiCountry, CountryViewHolder>(CountryItemCallback()) {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_country_row, parent, false)
-            return CountryViewHolder(view)
+            return CountryViewHolder(
+                ItemCountryRowBinding.inflate(
+                    /* inflater = */ LayoutInflater.from(requireContext()),
+                    /* root = */ parent,
+                    /* attachToRoot = */ false,
+                )
+            )
         }
 
         override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
@@ -137,24 +142,11 @@ class CountriesFragment : Fragment() {
     /**
      * [ViewHolder] representing a single row in a list of [Country] objects.
      */
-    inner class CountryViewHolder(itemView: View) : ViewHolder(itemView) {
+    inner class CountryViewHolder(private val binding: ItemCountryRowBinding) :
+        ViewHolder(binding.root) {
 
-        /**
-         * DataBinding feature was giving me trouble.  If it had worked, I would pass in the
-         * [ItemCountryRowBinding] object and simply store/refer to that.
-         */
-        private val textTitleRegion = itemView.findViewById<TextView>(R.id.text_name_region)
-        private val textCountryCode = itemView.findViewById<TextView>(R.id.text_country_code)
-        private val textCapital = itemView.findViewById<TextView>(R.id.text_capital)
-
-        fun bind(country: Country) {
-            textTitleRegion.text = getString(
-                R.string.country_name_region_format,
-                country.name,
-                country.region,
-            )
-            textCountryCode.text = country.code
-            textCapital.text = country.capital
+        fun bind(country: UiCountry) {
+            binding.viewModel = country
         }
     }
 }

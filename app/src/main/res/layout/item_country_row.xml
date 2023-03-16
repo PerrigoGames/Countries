@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.perrigogames.countries.data.Country" />
+            type="com.perrigogames.countries.ui.countries.UiCountry" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,6 +21,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/item_country_cell_row_spacing"
+            android:text="@{viewModel.countryHeaderText}"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/text_country_code"
@@ -33,18 +34,20 @@
             android:id="@+id/text_country_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="US"
             android:layout_marginStart="@dimen/item_country_cell_country_code_spacing"
+            android:text="@{viewModel.countryCodeText}"
             app:layout_constraintTop_toTopOf="@id/text_name_region"
             app:layout_constraintBottom_toBottomOf="@id/text_name_region"
             app:layout_constraintStart_toEndOf="@id/text_name_region"
             app:layout_constraintEnd_toEndOf="parent"
+            tools:text="US"
             />
 
         <TextView
             android:id="@+id/text_capital"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{viewModel.capitalText}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_name_region"
             app:layout_constraintBottom_toBottomOf="parent"

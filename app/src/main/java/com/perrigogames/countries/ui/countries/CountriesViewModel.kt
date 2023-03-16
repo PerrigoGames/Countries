@@ -31,7 +31,7 @@ class CountriesViewModel : ViewModel() {
         ERROR, // The fetch failed, show an error message.
     }
 
-    val countriesList = MutableLiveData<List<Country>>()
+    val countriesList = MutableLiveData<List<UiCountry>>()
     private val state = MutableLiveData<State>()
     val loadingVisible = state.map { it == State.FETCHING }
     val countriesVisible = state.map { it == State.SUCCESS }
@@ -54,7 +54,9 @@ class CountriesViewModel : ViewModel() {
             if (response.status.isSuccess()) {
                 try {
                     // This works around the mismatched content type from the server.
-                    val countries = Json.decodeFromString<List<Country>>(response.bodyAsText())
+                    val countries = Json
+                        .decodeFromString<List<Country>>(response.bodyAsText())
+                        .map { it.toUiModel() }
 
                     // Once computation is done, set the LiveData on the main thread.
                     viewModelScope.launch(Dispatchers.Main) {
